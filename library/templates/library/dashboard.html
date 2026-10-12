@@ -1,0 +1,27 @@
+{% extends "library/base.html" %}
+{% block title %}Dashboard | DigiLibrary{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4"><div><p class="eyebrow mb-1">LIBRARY OVERVIEW</p><h1 class="section-title mb-0">Dashboard</h1></div><a class="btn btn-primary" href="{% url 'issue_book' %}">＋ Issue a book</a></div>
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><div class="stat-card"><span>Total books</span><strong>{{ book_count }}</strong><small>Catalog titles</small></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span>Members</span><strong>{{ member_count }}</strong><small>Registered readers</small></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><span>On loan</span><strong>{{ active_count }}</strong><small>Not yet returned</small></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card warning-stat"><span>Overdue</span><strong>{{ overdue_records|length }}</strong><small>Need attention</small></div></div>
+</div>
+<section class="panel mb-4">
+  <div class="panel-heading"><div><h2 class="h5 mb-1">Overdue alerts</h2><p class="text-secondary small mb-0">Fine is ₹5 per overdue day, calculated on return.</p></div></div>
+  {% if overdue_records %}
+  <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Book</th><th>Member</th><th>Due date</th><th>Action</th></tr></thead><tbody>
+  {% for record in overdue_records %}<tr><td>{{ record.book.title }}</td><td>{{ record.member.name }}</td><td>{{ record.due_date|date:"d M Y" }}</td><td><a class="btn btn-sm btn-outline-primary" href="{% url 'return_book' record.id %}">Return book</a></td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-inline">No overdue books right now. Great!</div>{% endif %}
+</section>
+<section class="panel">
+  <div class="panel-heading"><h2 class="h5 mb-0">Recent circulation activity</h2><a href="{% url 'catalog' %}">Browse catalog</a></div>
+  {% if recent_records %}
+  <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Book</th><th>Member</th><th>Issued</th><th>Due</th><th>Status / action</th></tr></thead><tbody>
+  {% for record in recent_records %}<tr><td>{{ record.book.title }}</td><td>{{ record.member.name }}</td><td>{{ record.issue_date|date:"d M Y" }}</td><td>{{ record.due_date|date:"d M Y" }}</td><td>{% if record.returned %}<span class="badge text-bg-success">Returned</span>{% else %}<a class="btn btn-sm btn-outline-primary" href="{% url 'return_book' record.id %}">Return</a>{% endif %}</td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-inline">No circulation activity yet. Add a member and issue a book to begin.</div>{% endif %}
+</section>
+{% endblock %}

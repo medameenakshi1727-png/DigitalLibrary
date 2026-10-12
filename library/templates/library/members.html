@@ -1,0 +1,9 @@
+{% extends "library/base.html" %}
+{% block title %}Members | DigiLibrary{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center gap-3 mb-4"><div><p class="eyebrow mb-1">COMMUNITY</p><h1 class="section-title mb-0">Library members</h1></div><a class="btn btn-primary" href="{% url 'add_member' %}">＋ Add member</a></div>
+<div class="panel table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Name</th><th>Member ID</th><th>Email</th><th>Phone</th><th></th></tr></thead><tbody>
+{% for member in members %}<tr><td>{{ member.name }}</td><td>{{ member.member_id }}</td><td>{{ member.email }}</td><td>{{ member.phone }}</td><td><a class="btn btn-sm btn-outline-primary" href="{% url 'member_history' member.id %}">History</a></td></tr>
+{% empty %}<tr><td colspan="5" class="text-center py-5">No members yet. Add your first member.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

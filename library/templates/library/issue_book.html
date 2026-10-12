@@ -1,0 +1,10 @@
+{% extends "library/base.html" %}
+{% block title %}Issue a Book | DigiLibrary{% endblock %}
+{% block content %}
+<div class="form-shell"><a class="back-link" href="{% url 'dashboard' %}">← Back to dashboard</a><p class="eyebrow mt-3">CIRCULATION</p><h1 class="section-title">Issue a book</h1><p class="text-secondary">Books are due 14 days after the issue date.</p>
+<form method="post" class="panel form-panel">{% csrf_token %}
+  {% for field in form %}<div class="mb-3"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="text-danger small mt-1">{{ field.errors|striptags }}</div>{% endif %}</div>{% endfor %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+  <button class="btn btn-primary w-100" type="submit">Confirm issue</button>
+</form></div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "library/base.html" %}
+{% block title %}Return Book | DigiLibrary{% endblock %}
+{% block content %}
+<div class="form-shell"><a class="back-link" href="{% url 'dashboard' %}">← Back to dashboard</a><div class="panel p-4 mt-3"><p class="eyebrow">CIRCULATION</p><h1 class="section-title">Return this book?</h1><p><strong>{{ record.book.title }}</strong> issued to {{ record.member.name }}.</p><p>Due date: <strong>{{ record.due_date|date:"d M Y" }}</strong></p><p class="text-secondary">The final overdue fine will be calculated at ₹5 per day, if applicable.</p>
+{% if record.returned %}<div class="alert alert-info">This book has already been returned. Fine recorded: ₹{{ record.fine_amount }}</div>{% else %}<form method="post">{% csrf_token %}<button class="btn btn-primary" type="submit">Confirm return</button> <a class="btn btn-outline-secondary" href="{% url 'dashboard' %}">Cancel</a></form>{% endif %}
+</div></div>
+{% endblock %}

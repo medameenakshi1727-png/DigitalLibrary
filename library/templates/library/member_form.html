@@ -1,0 +1,9 @@
+{% extends "library/base.html" %}
+{% block title %}Add Member | DigiLibrary{% endblock %}
+{% block content %}
+<div class="form-shell"><a class="back-link" href="{% url 'members' %}">← Back to members</a><p class="eyebrow mt-3">COMMUNITY</p><h1 class="section-title">Add a member</h1>
+<form method="post" class="panel form-panel">{% csrf_token %}
+{% for field in form %}<div class="mb-3"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="text-danger small mt-1">{{ field.errors|striptags }}</div>{% endif %}</div>{% endfor %}
+<button class="btn btn-primary w-100" type="submit">Save member</button>
+</form></div>
+{% endblock %}

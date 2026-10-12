@@ -1,0 +1,9 @@
+{% extends "library/base.html" %}
+{% block title %}Member History | DigiLibrary{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'members' %}">← Back to members</a><p class="eyebrow mt-3">MEMBER HISTORY</p><h1 class="section-title">{{ member.name }}</h1><p class="text-secondary">{{ member.member_id }} · {{ member.email }}</p>
+<div class="panel table-responsive mt-4"><table class="table align-middle mb-0"><thead><tr><th>Book</th><th>Issue date</th><th>Due date</th><th>Return date</th><th>Fine</th><th>Status</th></tr></thead><tbody>
+{% for record in records %}<tr><td>{{ record.book.title }}</td><td>{{ record.issue_date|date:"d M Y" }}</td><td>{{ record.due_date|date:"d M Y" }}</td><td>{% if record.return_date %}{{ record.return_date|date:"d M Y" }}{% else %}—{% endif %}</td><td>₹{{ record.fine_amount }}</td><td>{% if record.returned %}<span class="badge text-bg-success">Returned</span>{% else %}<span class="badge text-bg-warning">On loan</span>{% endif %}</td></tr>
+{% empty %}<tr><td colspan="6" class="text-center py-5">No borrowing history for this member.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}
